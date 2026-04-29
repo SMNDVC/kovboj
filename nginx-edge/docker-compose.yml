@@ -1,0 +1,38 @@
+# Stop Traefik (or anything on 80/443) before starting this stack.
+# Requires: kovboj on Docker network "gitlab_backend" (same as before).
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx-dovicovic
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+      - letsencrypt:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    networks:
+      - gitlab_backend
+
+  certbot:
+    image: certbot/certbot:v2.11.0
+    container_name: certbot-dovicovic
+    restart: unless-stopped
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done"
+    networks:
+      - gitlab_backend
+
+networks:
+  gitlab_backend:
+    external: true
+    name: gitlab_backend
+
+volumes:
+  letsencrypt:
+  certbot-www:
