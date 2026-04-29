@@ -1,0 +1,32 @@
+services:
+  kovboj:
+    build: .
+    container_name: kovboj
+    restart: unless-stopped
+    networks:
+      - traefik
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=gitlab_backend
+
+      - traefik.http.middlewares.kovboj-gzip.compress=true
+      - traefik.http.middlewares.kovboj-https.redirectscheme.scheme=https
+
+      - traefik.http.routers.kovboj-http.entrypoints=web
+      - traefik.http.routers.kovboj-http.middlewares=kovboj-https
+      - traefik.http.routers.kovboj-http.rule=Host(`dovicovic.com`)
+
+      - traefik.http.routers.kovboj.entrypoints=websecure
+      - traefik.http.routers.kovboj.rule=Host(`dovicovic.com`)
+      - traefik.http.routers.kovboj.service=kovboj
+      - traefik.http.routers.kovboj.tls=true
+      - traefik.http.routers.kovboj.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-leresolver}
+      - traefik.http.routers.kovboj.middlewares=kovboj-gzip
+
+      - traefik.http.services.kovboj.loadbalancer.server.port=6000
+
+networks:
+  traefik:
+    name: gitlab_backend
+    external: true

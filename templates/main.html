@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>Ja, Kovboj</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg-clip-bottom: 14%;
+        --text: #faf6ef;
+        --text-soft: rgba(250, 246, 239, 0.94);
+        /* Strong halo + outline so light text separates from sky / rocks */
+        --shadow-hero:
+            0 0 1px rgba(0, 0, 0, 1),
+            0 0 2px rgba(0, 0, 0, 0.95),
+            0 1px 0 rgba(0, 0, 0, 1),
+            0 2px 0 rgba(0, 0, 0, 0.92),
+            0 3px 6px rgba(0, 0, 0, 0.95),
+            0 6px 16px rgba(0, 0, 0, 0.85),
+            0 12px 36px rgba(0, 0, 0, 0.65),
+            0 0 80px rgba(0, 0, 0, 0.45);
+        --panel: rgba(12, 10, 8, 0.82);
+        --accent: #e8d5b5;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Source Sans 3", system-ui, -apple-system, sans-serif;
+        font-weight: 400;
+        color: var(--text);
+        overflow-x: hidden;
+        background: black;
+        position: relative;
+    }
+
+    .background {
+        position: fixed;
+        inset: 0 0 auto 0;
+        min-height: 200vh;
+        background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee');
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: 100% auto;
+        /* Hide bottom of photo (road / car) so nothing peeks under the trailer */
+        clip-path: inset(0 0 var(--bg-clip-bottom, 14%) 0);
+        z-index: -2;
+        will-change: transform;
+        transform: translateY(0);
+    }
+
+    /* Typography: Fraunces (title) + Source Sans 3 (body) */
+    .title {
+        font-family: "Fraunces", Georgia, "Times New Roman", serif;
+        font-weight: 700;
+        font-optical-sizing: auto;
+        font-size: clamp(2.75rem, 9vw, 4.25rem);
+        line-height: 1.08;
+        letter-spacing: 0.02em;
+        margin-bottom: 0.35em;
+        color: var(--text);
+        text-shadow: var(--shadow-hero);
+        -webkit-text-stroke: 0.55px rgba(0, 0, 0, 0.55);
+    }
+
+    .subtitle {
+        font-family: "Source Sans 3", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+        line-height: 1.45;
+        max-width: 28em;
+        margin-left: auto;
+        margin-right: auto;
+        color: var(--text-soft);
+        text-shadow: var(--shadow-hero);
+        -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.5);
+    }
+
+    .wrapper {
+        position: relative;
+    }
+
+    .hero {
+        min-height: 120vh;
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .title-anchor {
+        position: absolute;
+        top: 9vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        text-align: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .section {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 20px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .intro-spacer {
+        min-height: 70vh;
+    }
+
+    /* Trailer: between earlier flex-start (~22vh) and bottom-pinned flex-end */
+    .trailer-section {
+        min-height: 100vh;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: clamp(28vh, 34vh, 42vh);
+        padding-bottom: clamp(8vh, 10vh, 14vh);
+        box-sizing: border-box;
+    }
+
+    .trailer-tagline {
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(1.15rem, 3vw, 1.45rem);
+        line-height: 1.35;
+        max-width: 28rem;
+        margin: 0 0 1.25rem;
+        padding: 0 0.5rem;
+        color: var(--text);
+        text-shadow: var(--shadow-hero);
+        -webkit-text-stroke: 0.35px rgba(0, 0, 0, 0.45);
+    }
+
+    .video-placeholder {
+        width: min(700px, 75vw);
+        max-height: 38vh;
+        aspect-ratio: 16/9;
+        background: #0a0908;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        border: 1px solid rgba(232, 213, 181, 0.45);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+        margin-bottom: 0;
+        font-family: "Source Sans 3", system-ui, sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div id="wrapper" class="wrapper">
+    <div class="hero">
+        <div class="title-anchor">
+            <div class="title">Ja, Kovboj</div>
+            <div class="subtitle">Jeden revolver, Tri zákony, žiadne milosrdenstvo.</div>
+        </div>
+
+        <div class="section intro-spacer"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content" class="section trailer-section">
+
+        <p class="trailer-tagline">Ale čo sa stane, keď robot začne klásť otázky?</p>
+
+        <div class="video-placeholder">
+            TRAILER // LOADING...
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    const BG_SRC = 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee';
+
+    const background = document.querySelector('.background');
+    const contentEl = document.getElementById('content');
+
+    let naturalW = 0;
+    let naturalH = 0;
+    /** Rendered bg height at current viewport width (px). */
+    let renderedHeight = 0;
+
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animateScrollTo(targetY, durationMs, easingFn) {
+        const startY = window.scrollY || window.pageYOffset;
+        const delta = targetY - startY;
+        const t0 = performance.now();
+
+        function frame(now) {
+            const u = Math.min(1, (now - t0) / durationMs);
+            const e = easingFn(u);
+            window.scrollTo(0, startY + delta * e);
+            updateParallax();
+            if (u < 1) {
+                requestAnimationFrame(frame);
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    /**
+     * Scroll 0: image top aligned with viewport top (title / sky).
+     * Scroll reaches #content: image vertically centered in viewport.
+     * Between: interpolate — bg moves at different rate than content (unless endpoints coincide).
+     */
+    function updateParallax() {
+        if (!renderedHeight) return;
+
+        const y = window.scrollY || window.pageYOffset;
+        const vh = window.innerHeight;
+        const contentTop = contentEl ? contentEl.offsetTop : 0;
+
+        /* Center framing at content, then bias slightly up so less road / car shows */
+        const centerTy = (vh - renderedHeight) / 2;
+        const endTy = centerTy - renderedHeight * 0.045;
+
+        let ty;
+        if (contentTop <= 0) {
+            ty = endTy;
+        } else if (y <= 0) {
+            ty = 0;
+        } else if (y >= contentTop) {
+            ty = endTy;
+        } else {
+            ty = (y / contentTop) * endTy;
+        }
+
+        const transform = `translateY(${ty}px)`;
+        background.style.transform = transform;
+    }
+
+    function applyMeasurements() {
+        if (!naturalW || !naturalH) return;
+
+        const vw = window.innerWidth;
+        renderedHeight = (naturalH / naturalW) * vw;
+
+        background.style.minHeight = `${renderedHeight}px`;
+        updateParallax();
+    }
+
+    function initBackgroundAndAutoScroll() {
+        const img = new Image();
+        img.onload = function () {
+            naturalW = img.naturalWidth;
+            naturalH = img.naturalHeight;
+            window.scrollTo(0, 0);
+            applyMeasurements();
+
+            setTimeout(function () {
+                if (!contentEl) return;
+                animateScrollTo(contentEl.offsetTop, 1000, easeInOutCubic);
+            }, 2000);
+        };
+        img.src = BG_SRC;
+    }
+
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.scrollTo(0, 0);
+            updateParallax();
+        }
+    });
+
+    initBackgroundAndAutoScroll();
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    window.addEventListener('resize', function () {
+        applyMeasurements();
+    });
+</script>
+
+</body>
+</html>
