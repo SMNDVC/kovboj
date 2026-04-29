@@ -11,6 +11,7 @@ services:
     labels:
       # Quote every value: unquoted `||` / backticks often break YAML → Traefik never sees routers
       - "traefik.enable=true"
+      - "custom.label=custom-value"
       - "traefik.docker.network=gitlab_backend"
 
       - "traefik.http.middlewares.kovboj-gzip.compress=true"
