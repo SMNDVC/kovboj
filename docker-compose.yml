@@ -25,7 +25,8 @@ services:
       - "traefik.http.routers.kovboj.rule=Host(`dovicovic.com`) || Host(`www.dovicovic.com`)"
       - "traefik.http.routers.kovboj.service=kovboj"
       - "traefik.http.routers.kovboj.tls=true"
-      - "traefik.http.routers.kovboj.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-leresolver}"
+      # HTTPS cert via HTTP-01 only for kovboj; other stacks keep using leresolver (TLS-ALPN)
+      - "traefik.http.routers.kovboj.tls.certresolver=leresolver-http"
       - "traefik.http.routers.kovboj.middlewares=kovboj-gzip"
 
       - "traefik.http.services.kovboj.loadbalancer.server.port=6000"
