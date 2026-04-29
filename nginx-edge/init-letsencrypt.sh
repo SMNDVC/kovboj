@@ -14,14 +14,14 @@ docker compose up -d nginx
 sleep 2
 
 echo "==> Requesting Let's Encrypt certificate"
+# Apex only — add www to DNS first if you need www on the cert (-d "www.$DOMAIN")
 docker compose run --rm --entrypoint certbot certbot certonly \
   --webroot \
   --webroot-path=/var/www/certbot \
   --email "$EMAIL" \
   --agree-tos \
   --no-eff-email \
-  -d "$DOMAIN" \
-  -d "www.$DOMAIN"
+  -d "$DOMAIN"
 
 echo "==> Enabling HTTPS nginx config"
 rm -f nginx/conf.d/00-dovicovic-http.conf
